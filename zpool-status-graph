@@ -8,10 +8,10 @@ if [ "$1" == "autoconf" ]; then
     fi
 elif [ "$1" == "config" ]; then
     echo "graph_title Zpool Status"
-    echo "graph_vlabel Temperature in Celsius"
+    echo "graph_vlabel Problems"
     echo "graph_category Disk"
     I=1;
-    for zpools in $(pool list -H -o name | sort)
+    for zpools in $(zpool list -H -o name | sort)
     do
      	echo "status$I.warning 1"
      	echo "status$I.critical 2"
