@@ -1,0 +1,43 @@
+#!/bin/bash
+
+if [ "$1" == "autoconf" ]; then
+    if [ $(zpool list -H -o name) == "" ]; then
+        echo "no"
+        exit 1
+    else
+        echo "yes"
+    fi
+elif [ "$1" == "config" ]; then
+    echo "graph_title Zpool Status"
+    echo "graph_vlabel Temperature in Celsius"
+    echo "graph_category Disk"
+    I=1;
+    for zpools in $(pool list -H -o name | sort)
+    do
+     	echo "status$I.warning 1"
+     	echo "status$I.critical 2"
+     	echo "status$I.label $zpools"
+        I=$((I+1));
+    done
+else
+	I=1;
+	for zpools in $(zpool list -H -o name | sort)
+	do
+        health=$(zpool list -H -o health $zpools)
+        case $health in
+            ONLINE)
+                echo "status$I.value 0"
+            ;;
+            DEGRADED)
+                echo "status$I.value 1"
+            ;;
+            FAULTED)
+                echo "status$I.value 2"
+            ;;
+            *)
+                echo "status$I.value 1"
+            ;;
+        esac
+	    I=$(($I+1));
+	done
+fi
