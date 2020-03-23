@@ -9,7 +9,7 @@ Please give me a star, because it is a good feeling that I helped someone. :)
 Installation
 ------------
 
-1. Copy or create a symlink (ln -s):
+1. Copy the file to:
 
        /etc/munin/plugins/zpool-status-graph
 
